@@ -5,6 +5,7 @@ import com.nikiproject.TMS.enums.UserStatus;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class CreateUserRequest {
@@ -25,10 +26,9 @@ public class CreateUserRequest {
 	@Size(min = 6, message = "Password must contains 6 characters")
 	private String password;
 	
-	@NotBlank(message= "Role is required.")
+	@NotNull(message= "Role is required.")
 	private UserRole role;
 	
-	@NotBlank(message= "Status is required.")
 	private UserStatus status;
 	
 	@NotBlank(message= "Department is required.")
