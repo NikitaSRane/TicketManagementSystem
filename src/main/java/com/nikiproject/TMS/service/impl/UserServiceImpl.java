@@ -9,6 +9,7 @@ import com.nikiproject.TMS.dto.user.CreateUserRequest;
 import com.nikiproject.TMS.dto.user.UserResponse;
 import com.nikiproject.TMS.enums.UserStatus;
 import com.nikiproject.TMS.exception.UserAlreadyExistException;
+import com.nikiproject.TMS.exception.UserNotFoundException;
 import com.nikiproject.TMS.model.User;
 import com.nikiproject.TMS.repository.UserRepository;
 import com.nikiproject.TMS.service.UserService;
@@ -46,11 +47,21 @@ public class UserServiceImpl implements UserService{
 		return mapToResponse(savedUser);
 	}
 	
+	@Override
 	public List<UserResponse> getAllUsers()
 	{
 		return userRepository.findAll()
 		.stream().map(this::mapToResponse)
 		.toList();
+	}
+	
+	@Override
+	public UserResponse getUserById(Long id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(
+						()-> new UserNotFoundException("User not found with this id "+id)
+						);
+		return mapToResponse(user);
 	}
 	
 	private UserResponse mapToResponse(User user)
@@ -67,6 +78,10 @@ public class UserServiceImpl implements UserService{
 		response.setUpdatedAt(user.getUpdatedAt());
 		return response;
 	}
+
+
+
+	
 	
 	
 }

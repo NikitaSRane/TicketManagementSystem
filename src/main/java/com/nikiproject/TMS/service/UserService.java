@@ -8,4 +8,6 @@ public interface UserService {
 	public UserResponse createUser(CreateUserRequest request);
 
 	public List<UserResponse> getAllUsers();
+
+	public UserResponse getUserById(Long id);
 }
