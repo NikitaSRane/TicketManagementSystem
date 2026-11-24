@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.nikiproject.TMS.dto.user.CreateUserRequest;
 import com.nikiproject.TMS.dto.user.UserResponse;
 import com.nikiproject.TMS.enums.UserStatus;
+import com.nikiproject.TMS.exception.UserAlreadyExistException;
 import com.nikiproject.TMS.model.User;
 import com.nikiproject.TMS.repository.UserRepository;
 import com.nikiproject.TMS.service.UserService;
@@ -25,6 +26,11 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserResponse createUser(CreateUserRequest request) {
+		
+		if(userRepository.existsByEmail(request.getEmail()))
+		{
+			throw new UserAlreadyExistException("User is alredy exist with this email "+request.getEmail());
+		}
 		
 		User user= new User();
 		user.setFirstName(request.getFirstName());

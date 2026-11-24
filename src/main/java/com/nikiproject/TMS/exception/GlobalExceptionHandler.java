@@ -3,6 +3,7 @@ package com.nikiproject.TMS.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,4 +28,14 @@ public class GlobalExceptionHandler {
 		ApiResponse<Map<String, String>> response = new ApiResponse<>(400, "Validation failed.",errors);
 		return ResponseEntity.badRequest().body(response);
 	}
+	
+	@ExceptionHandler(UserAlreadyExistException.class)
+	public ResponseEntity<ApiResponse<Void>> handleUserAlreadyExistException(UserAlreadyExistException exception)
+	{
+		
+		ApiResponse<Void> response= new ApiResponse<>(409,exception.getMessage(),null);
+		
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+	}
+	
 }
