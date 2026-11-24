@@ -1,6 +1,7 @@
 package com.nikiproject.TMS.service.impl;
 
 import java.net.Authenticator.RequestorType;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,13 @@ public class UserServiceImpl implements UserService{
 		return mapToResponse(savedUser);
 	}
 	
+	public List<UserResponse> getAllUsers()
+	{
+		return userRepository.findAll()
+		.stream().map(this::mapToResponse)
+		.toList();
+	}
+	
 	private UserResponse mapToResponse(User user)
 	{
 		UserResponse response=new UserResponse();
@@ -59,4 +67,6 @@ public class UserServiceImpl implements UserService{
 		response.setUpdatedAt(user.getUpdatedAt());
 		return response;
 	}
+	
+	
 }

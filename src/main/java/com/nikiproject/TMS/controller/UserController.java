@@ -1,8 +1,11 @@
 package com.nikiproject.TMS.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +33,13 @@ public class UserController {
 	public ResponseEntity<ApiResponse<UserResponse>> createUser(@Valid @RequestBody CreateUserRequest request){
 		UserResponse user = userservice.createUser(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(201,"User created successfully.",user));
+	}
+	
+	@GetMapping
+	public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers()
+	{
+		List<UserResponse> response = userservice.getAllUsers();
+		
+		return ResponseEntity.ok( new ApiResponse<>(200,"Users fetched successfully", response));
 	}
 }
