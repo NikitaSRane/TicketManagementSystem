@@ -27,9 +27,9 @@ public class CreateUserRequest {
 	private String password;
 	
 	@NotNull(message= "Role is required.")
-	private UserRole role;
-	
-	private UserStatus status;
+		private UserRole role;
+		
+		private UserStatus status;
 	
 	@NotBlank(message= "Department is required.")
 	private String department;

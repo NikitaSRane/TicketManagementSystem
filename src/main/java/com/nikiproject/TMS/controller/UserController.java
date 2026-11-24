@@ -8,11 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nikiproject.TMS.dto.user.CreateUserRequest;
+import com.nikiproject.TMS.dto.user.UpdateUserRequest;
 import com.nikiproject.TMS.dto.user.UserResponse;
 import com.nikiproject.TMS.response.ApiResponse;
 import com.nikiproject.TMS.service.UserService;
@@ -51,4 +53,13 @@ public class UserController {
 		
 		return ResponseEntity.ok( new ApiResponse<>(200,"Users fetched successfully", response));
 	}
+	
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<ApiResponse<UserResponse>> updateUser(@Valid @RequestBody UpdateUserRequest request ,@PathVariable Long id)
+	{
+		UserResponse response = userservice.updateUser(id,request);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200,"User updated successfully.",response));	}
+	
 }

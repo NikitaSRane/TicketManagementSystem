@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.nikiproject.TMS.dto.user.CreateUserRequest;
+import com.nikiproject.TMS.dto.user.UpdateUserRequest;
 import com.nikiproject.TMS.dto.user.UserResponse;
 import com.nikiproject.TMS.enums.UserStatus;
 import com.nikiproject.TMS.exception.UserAlreadyExistException;
@@ -13,6 +14,8 @@ import com.nikiproject.TMS.exception.UserNotFoundException;
 import com.nikiproject.TMS.model.User;
 import com.nikiproject.TMS.repository.UserRepository;
 import com.nikiproject.TMS.service.UserService;
+
+import jakarta.validation.Valid;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -64,6 +67,25 @@ public class UserServiceImpl implements UserService{
 		return mapToResponse(user);
 	}
 	
+	@Override
+	public UserResponse updateUser(Long id, @Valid UpdateUserRequest request) {
+		User user = userRepository.findById(id)
+				.orElseThrow(
+						()-> new UserNotFoundException("User not found with this id "+id)
+						);
+		user.setFirstName(request.getFirstName());
+		user.setLastName(request.getLastName());
+		user.setEmail(request.getEmail());
+		user.setDepartment(request.getDepartment());
+		user.setRole(request.getRole());
+		
+		User updatedUser= userRepository.save(user);
+		
+		return mapToResponse(updatedUser);
+		
+		
+	}
+	
 	private UserResponse mapToResponse(User user)
 	{
 		UserResponse response=new UserResponse();
@@ -79,9 +101,5 @@ public class UserServiceImpl implements UserService{
 		return response;
 	}
 
-
-
-	
-	
 	
 }
